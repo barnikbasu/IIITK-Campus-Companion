@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+sqlalchemy
+streamlit
+sentence-transformers
+chromadb
+pypdf
+python-dotenv
+requests
+huggingface_hub
+scikit-learn
