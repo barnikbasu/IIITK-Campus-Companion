@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { GoogleGenAI } from "@google/genai";
 import ReactMarkdown from 'react-markdown';
 import { ICONS } from '../constants';
 import { cn } from '../lib/utils';
@@ -10,6 +9,18 @@ interface Message {
   text: string;
   timestamp: Date;
 }
+
+const KNOWLEDGE_BASE: Record<string, string> = {
+  'faculty': "IIIT Kalyani has a dedicated team of faculty members in CSE and ECE departments. You can find the full list in the **Faculty Directory** tab.",
+  'courses': "We offer B.Tech programs in **Computer Science & Engineering (CSE)** and **Electronics & Communication Engineering (ECE)**. We also have Ph.D. programs.",
+  'hostel': "IIIT Kalyani provides hostel facilities for students. The hostels are equipped with basic amenities, Wi-Fi, and common rooms.",
+  'canteen': "The campus canteen offers a variety of veg and non-veg options. You can check the today's menu in the **Canteen** tab.",
+  'admission': "Admissions to B.Tech programs are done through **JoSAA/CSAB** based on JEE Main ranks.",
+  'location': "IIIT Kalyani is located in Kalyani, West Bengal. The campus is currently operating from the Webel IT Park.",
+  'contact': "You can contact the administration at **office@iiitkalyani.ac.in** or visit the official website at iiitkalyani.ac.in.",
+  'placement': "The Training & Placement cell handles campus recruitments. Many students get placed in top tech companies like Amazon, Jio, and more.",
+  'events': "We have various cultural and technical fests like **Regalia** and **Continuum**. Check the **Notices** tab for upcoming events.",
+};
 
 export default function AIAssistant() {
   const [messages, setMessages] = useState<Message[]>([
@@ -44,42 +55,27 @@ export default function AIAssistant() {
     setInput('');
     setIsLoading(true);
 
-    try {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
-      const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: [
-          {
-            role: 'user',
-            parts: [{ text: `You are a helpful campus assistant for IIIT Kalyani (Indian Institute of Information Technology, Kalyani). 
-            Provide accurate information about the college, its faculty, courses (B.Tech in CSE and ECE), campus life, and facilities. 
-            If you don't know something specific, suggest contacting the relevant office. 
-            Keep your tone professional yet friendly. 
-            User question: ${input}` }]
-          }
-        ],
-        config: {
-          systemInstruction: "You are the IIIT Kalyani Campus Companion AI. Be concise, helpful, and accurate about IIIT Kalyani."
+    // Simulate thinking
+    setTimeout(() => {
+      const lowerInput = input.toLowerCase();
+      let responseText = "I'm sorry, I don't have specific information about that yet. Try asking about 'faculty', 'courses', 'hostel', 'canteen', or 'placement'.";
+
+      for (const [key, value] of Object.entries(KNOWLEDGE_BASE)) {
+        if (lowerInput.includes(key)) {
+          responseText = value;
+          break;
         }
-      });
+      }
 
       const modelMessage: Message = {
         role: 'model',
-        text: response.text || "I'm sorry, I couldn't process that request.",
+        text: responseText,
         timestamp: new Date()
       };
 
       setMessages(prev => [...prev, modelMessage]);
-    } catch (error) {
-      console.error("AI Error:", error);
-      setMessages(prev => [...prev, {
-        role: 'model',
-        text: "I'm having some trouble connecting right now. Please try again later.",
-        timestamp: new Date()
-      }]);
-    } finally {
       setIsLoading(false);
-    }
+    }, 600);
   };
 
   return (
