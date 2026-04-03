@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  * {
+    @apply border-slate-200;
+  }
+  body {
+    @apply bg-[#f8fafc] text-slate-900 antialiased;
+  }
+}
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+  }
+
+  .markdown-body {
+    @apply text-sm leading-relaxed space-y-4;
+  }
+  .markdown-body h1 { @apply text-2xl font-black mb-4; }
+  .markdown-body h2 { @apply text-xl font-bold mb-3; }
+  .markdown-body h3 { @apply text-lg font-bold mb-2; }
+  .markdown-body p { @apply mb-4; }
+  .markdown-body ul { @apply list-disc pl-5 mb-4 space-y-1; }
+  .markdown-body ol { @apply list-decimal pl-5 mb-4 space-y-1; }
+  .markdown-body code { @apply bg-slate-100 px-1.5 py-0.5 rounded font-mono text-indigo-600; }
+  .markdown-body pre { @apply bg-slate-900 text-slate-100 p-4 rounded-2xl overflow-x-auto mb-4 font-mono text-xs; }
+  .markdown-body blockquote { @apply border-l-4 border-indigo-500 pl-4 italic text-slate-500; }
+}
+
