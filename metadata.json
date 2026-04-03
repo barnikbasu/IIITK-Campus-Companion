@@ -1,0 +1,7 @@
+{
+  "name": "IIITK Campus Companion",
+  "description": "An all-in-one internal college app for IIIT Kalyani students, teachers, and staff. Features include timetables, attendance tracking, resource hub, notice board, and an AI campus assistant.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
