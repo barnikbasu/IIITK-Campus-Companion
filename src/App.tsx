@@ -14,9 +14,6 @@ import Directory from './components/Directory';
 import LostFound from './components/LostFound';
 import Canteen from './components/Canteen';
 import AIAssistant from './components/AIAssistant';
-import Clubs from './components/Clubs';
-import Mentorship from './components/Mentorship';
-import Wellness from './components/Wellness';
 import { User, Role } from './types';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -176,9 +173,6 @@ export default function App() {
       case 'lost-found': return <LostFound />;
       case 'canteen': return <Canteen />;
       case 'ai-assistant': return <AIAssistant />;
-      case 'clubs': return <Clubs />;
-      case 'mentorship': return <Mentorship />;
-      case 'wellness': return <Wellness />;
       default: return <Dashboard user={user} setActiveTab={setActiveTab} />;
     }
   };
