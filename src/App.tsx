@@ -74,7 +74,20 @@ const SectionHeading = ({ children, subtitle }: { children: React.ReactNode; sub
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'tools' | 'directory'>('dashboard');
+  const [activeTab, setActiveTab] = useState<
+    | 'dashboard' 
+    | 'tools' 
+    | 'directory'
+    | 'schedule'
+    | 'mess'
+    | 'notices'
+    | 'resources'
+    | 'opportunities'
+    | 'tasks'
+    | 'lostfound'
+    | 'market'
+    | 'chatbot'
+  >('dashboard');
   
   // CGPA Calculator State
   const [grades, setGrades] = useState<{ credit: number; grade: number }[]>([{ credit: 0, grade: 0 }]);
@@ -88,6 +101,51 @@ export default function App() {
   const [attendance, setAttendance] = useState<{ subject: string; attended: number; total: number }[]>([
     { subject: 'Data Structures', attended: 12, total: 15 },
     { subject: 'Algorithms', attended: 8, total: 10 },
+  ]);
+
+  // Schedule (next lectures etc.)
+  const [schedule, setSchedule] = useState<Array<{ time: string; course: string; room: string; teacher: string }>>([
+    { time: '09:00 - 10:00', course: 'Operating Systems', room: 'AB-203', teacher: 'Dr. Rao' },
+    { time: '11:00 - 12:00', course: 'Linear Algebra', room: 'AB-105', teacher: 'Prof. Sen' },
+  ]);
+
+  // Mess Menu (simple daily menu)
+  const [messMenu, setMessMenu] = useState<Array<{ meal: 'Breakfast' | 'Lunch' | 'Snacks' | 'Dinner'; items: string[] }>>([
+    { meal: 'Breakfast', items: ['Poha', 'Boiled Egg', 'Banana', 'Milk'] },
+    { meal: 'Lunch', items: ['Rice', 'Dal', 'Paneer Curry', 'Salad'] },
+    { meal: 'Snacks', items: ['Samosa', 'Tea'] },
+    { meal: 'Dinner', items: ['Roti', 'Chicken Curry', 'Jeera Rice'] },
+  ]);
+
+  // Academic Resources
+  const [resources] = useState<Array<{ title: string; type: 'Notes' | 'Syllabus' | 'Previous Year'; url: string }>>([
+    { title: 'DSA Notes (PDF)', type: 'Notes', url: '#' },
+    { title: 'OS Syllabus', type: 'Syllabus', url: '#' },
+    { title: 'Maths PYQs', type: 'Previous Year', url: '#' },
+  ]);
+
+  // Opportunities
+  const [opportunities] = useState<Array<{ title: string; org: string; deadline: string; url: string }>>([
+    { title: 'Summer Internship - SDE', org: 'TechCorp', deadline: '2026-05-01', url: '#' },
+    { title: 'Hackathon: Build4Campus', org: 'OpenAI Labs', deadline: '2026-04-30', url: '#' },
+  ]);
+
+  // Task Manager
+  const [tasks, setTasks] = useState<Array<{ id: number; title: string; due?: string; done: boolean }>>([
+    { id: 1, title: 'Submit OS Assignment 2', due: '2026-04-12', done: false },
+    { id: 2, title: 'CG Lab Report', due: '2026-04-14', done: true },
+  ]);
+
+  // Lost & Found
+  const [lostFound, setLostFound] = useState<Array<{ id: number; status: 'Lost' | 'Found'; item: string; where: string; contact: string }>>([
+    { id: 1, status: 'Lost', item: 'Black Wallet', where: 'Canteen Area', contact: '98765 12345' },
+    { id: 2, status: 'Found', item: 'Water Bottle (Blue)', where: 'Library 1st Floor', contact: 'dean.acad@iiitkalyani.ac.in' },
+  ]);
+
+  // Buy & Sell
+  const [market] = useState<Array<{ id: number; title: string; price: string; condition: string; contact: string }>>([
+    { id: 1, title: 'Used Calculus Book', price: '₹200', condition: 'Good', contact: 'student1@iiitkalyani.ac.in' },
+    { id: 2, title: 'Headphones', price: '₹600', condition: 'Like New', contact: 'student2@iiitkalyani.ac.in' },
   ]);
 
   return (
@@ -105,7 +163,7 @@ export default function App() {
           </div>
 
           <div className="hidden md:flex md:items-center md:gap-1">
-            {['dashboard', 'tools', 'directory'].map((tab) => (
+            {['dashboard','schedule','mess','notices','resources','opportunities','tasks','lostfound','market','directory','tools','chatbot'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab as any)}
@@ -452,6 +510,239 @@ export default function App() {
                 <a href="tel:+913325821234" className="sm:ml-auto rounded-full bg-rose-600 px-8 py-3 text-white font-bold shadow-lg hover:bg-rose-700 transition-all">
                   Call Now
                 </a>
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'schedule' && (
+            <motion.div
+              key="schedule"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-8"
+            >
+              <SectionHeading subtitle="Always know your next lecture.">
+                Class Schedule
+              </SectionHeading>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {schedule.map((s, i) => (
+                  <div key={i} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <div className="font-bold text-slate-900">{s.course}</div>
+                      <div className="text-sm font-semibold text-blue-600">{s.time}</div>
+                    </div>
+                    <div className="mt-2 text-sm text-slate-600">Room: {s.room}</div>
+                    <div className="text-sm text-slate-600">Teacher: {s.teacher}</div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'mess' && (
+            <motion.div
+              key="mess"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-8"
+            >
+              <SectionHeading subtitle="Plan meals without surprises.">
+                Mess Menu
+              </SectionHeading>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                {messMenu.map((m, i) => (
+                  <div key={i} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <div className="mb-2 text-sm font-bold text-slate-500 uppercase">{m.meal}</div>
+                    <ul className="list-disc pl-5 text-slate-700 text-sm space-y-1">
+                      {m.items.map((it, idx) => <li key={idx}>{it}</li>)}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'notices' && (
+            <motion.div
+              key="notices"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-8"
+            >
+              <SectionHeading subtitle="Never miss important announcements. Admin mode planned.">
+                Notices & Events
+              </SectionHeading>
+              <div className="space-y-4">
+                {NOTICES.map(n => (
+                  <div key={n.id} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold uppercase tracking-wider text-slate-400">{n.category}</span>
+                      <span className="text-xs text-slate-400">{n.date}</span>
+                    </div>
+                    <div className="mt-1 font-semibold text-slate-900">{n.title}</div>
+                    {n.important && <div className="mt-2 text-[10px] font-bold uppercase text-rose-600">Important</div>}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'resources' && (
+            <motion.div
+              key="resources"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-8"
+            >
+              <SectionHeading subtitle="Easy access to study materials.">
+                Academic Resources
+              </SectionHeading>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {resources.map((r, i) => (
+                  <a key={i} href={r.url} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition">
+                    <div className="text-sm font-bold text-slate-500 uppercase">{r.type}</div>
+                    <div className="mt-1 font-semibold text-slate-900">{r.title}</div>
+                    <div className="mt-2 inline-flex items-center gap-1 text-sm text-blue-600">
+                      Open <ChevronRight size={16} />
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'opportunities' && (
+            <motion.div
+              key="opportunities"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-8"
+            >
+              <SectionHeading subtitle="Internships, events & more. Admin mode planned.">
+                Opportunities
+              </SectionHeading>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {opportunities.map((o, i) => (
+                  <a key={i} href={o.url} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition">
+                    <div className="flex items-center justify-between">
+                      <div className="font-semibold text-slate-900">{o.title}</div>
+                      <div className="text-xs text-slate-500">Deadline: {o.deadline}</div>
+                    </div>
+                    <div className="mt-1 text-sm text-slate-600">{o.org}</div>
+                  </a>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'tasks' && (
+            <motion.div
+              key="tasks"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-8"
+            >
+              <SectionHeading subtitle="Stay on top of assignments.">
+                Task Manager
+              </SectionHeading>
+              <div className="space-y-3">
+                {tasks.map(t => (
+                  <div key={t.id} className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                    <input
+                      aria-label="toggle task"
+                      type="checkbox"
+                      checked={t.done}
+                      onChange={() => setTasks(ts => ts.map(x => x.id === t.id ? { ...x, done: !x.done } : x))}
+                    />
+                    <div className={cn("flex-1", t.done ? "line-through text-slate-400" : "text-slate-800")}>
+                      {t.title}
+                    </div>
+                    {t.due && <div className="text-xs font-semibold text-slate-500">Due: {t.due}</div>}
+                    <button
+                      className="p-1 text-slate-400 hover:text-rose-500"
+                      onClick={() => setTasks(ts => ts.filter(x => x.id !== t.id))}
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'lostfound' && (
+            <motion.div
+              key="lostfound"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-8"
+            >
+              <SectionHeading subtitle="Return or claim lost items easily.">
+                Lost & Found
+              </SectionHeading>
+              <div className="space-y-3">
+                {lostFound.map(l => (
+                  <div key={l.id} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <div className={cn("text-xs font-bold uppercase", l.status === 'Lost' ? "text-rose-600" : "text-emerald-600")}>
+                        {l.status}
+                      </div>
+                      <div className="text-sm text-slate-500">{l.where}</div>
+                    </div>
+                    <div className="mt-1 font-semibold text-slate-900">{l.item}</div>
+                    <div className="mt-1 text-sm text-slate-600">Contact: {l.contact}</div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'market' && (
+            <motion.div
+              key="market"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-8"
+            >
+              <SectionHeading subtitle="Student-to-student marketplace.">
+                Buy & Sell
+              </SectionHeading>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {market.map(m => (
+                  <div key={m.id} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <div className="font-semibold text-slate-900">{m.title}</div>
+                    <div className="text-sm text-emerald-600 font-bold mt-1">{m.price}</div>
+                    <div className="text-sm text-slate-600">Condition: {m.condition}</div>
+                    <div className="mt-2 text-sm text-slate-600">Contact: {m.contact}</div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'chatbot' && (
+            <motion.div
+              key="chatbot"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-8"
+            >
+              <SectionHeading subtitle="Navigate everything seamlessly. Advanced AI planned.">
+                Chatbot
+              </SectionHeading>
+              <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+                <div className="text-slate-600 text-sm">
+                  Chatbot UI placeholder. Hook your provider here (e.g., college-specific knowledge base, auth-gated).
+                </div>
               </div>
             </motion.div>
           )}
