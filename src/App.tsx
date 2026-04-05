@@ -51,9 +51,8 @@ const NOTICES: Notice[] = [
 ];
 
 const CONTACTS: Contact[] = [
-  { name: "Dr. S. Mukherjee", role: "Academic Dean", phone: "+91 33 2582 2240", email: "dean.acad@iiitkalyani.ac.in" },
-  { name: "Mr. R. Das", role: "Hostel Warden", phone: "+91 98765 43210", email: "warden@iiitkalyani.ac.in" },
-  { name: "Campus Security", role: "Emergency", phone: "+91 33 2582 1234", email: "security@iiitkalyani.ac.in" },
+  { name: "Dr. Santanu Chattopadhyay ", role: "Director", phone: "+91-3222-283564", email: "director@iiitkalyani.ac.in" },
+  { name: "Office", role: "General", phone: "+91 33 2582 1234", email: "office@iiitkalyani.ac.in" },
 ];
 
 const QUICK_LINKS = [
@@ -371,12 +370,12 @@ export default function App() {
                           className="w-full rounded-xl border border-slate-200 px-4 py-2 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none"
                         >
                           <option value="0">Select Grade</option>
-                          <option value="10">O (10)</option>
-                          <option value="9">E (9)</option>
-                          <option value="8">A (8)</option>
-                          <option value="7">B (7)</option>
-                          <option value="6">C (6)</option>
-                          <option value="5">D (5)</option>
+                          <option value="10">EX (10)</option>
+                          <option value="9">A (9)</option>
+                          <option value="8">B (8)</option>
+                          <option value="7">C (7)</option>
+                          <option value="6">D (6)</option>
+                          <option value="5">P (5)</option>
                         </select>
                       </div>
                       <button 
