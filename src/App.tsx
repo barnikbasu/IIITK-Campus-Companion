@@ -51,8 +51,9 @@ const NOTICES: Notice[] = [
 ];
 
 const CONTACTS: Contact[] = [
-  { name: "Dr. Santanu Chattopadhyay ", role: "Director", phone: "+91-3222-283564", email: "director@iiitkalyani.ac.in" },
-  { name: "Office", role: "General", phone: "+91 33 2582 1234", email: "office@iiitkalyani.ac.in" },
+  { name: "Dr. S. Mukherjee", role: "Academic Dean", phone: "+91 33 2582 2240", email: "dean.acad@iiitkalyani.ac.in" },
+  { name: "Mr. R. Das", role: "Hostel Warden", phone: "+91 98765 43210", email: "warden@iiitkalyani.ac.in" },
+  { name: "Campus Security", role: "Emergency", phone: "+91 33 2582 1234", email: "security@iiitkalyani.ac.in" },
 ];
 
 const QUICK_LINKS = [
@@ -86,6 +87,10 @@ export default function App() {
     | 'lostfound'
     | 'market'
     | 'chatbot'
+    | 'qa'
+    | 'materials'
+    | 'staff'
+    | 'clubs'
   >('dashboard');
   
   // CGPA Calculator State
@@ -147,6 +152,38 @@ export default function App() {
     { id: 2, title: 'Headphones', price: '₹600', condition: 'Like New', contact: 'student2@iiitkalyani.ac.in' },
   ]);
 
+  // Student–Faculty Q&A (placeholder data)
+  const [faculty] = useState<Array<{ id: number; name: string; dept: string; email: string }>>([
+    { id: 1, name: 'Prof. A. Gupta', dept: 'CSE', email: 'agupta@iiitkalyani.ac.in' },
+    { id: 2, name: 'Dr. R. Nandi', dept: 'ECE', email: 'rnandi@iiitkalyani.ac.in' },
+  ]);
+  const [questions, setQuestions] = useState<Array<{ id: number; toFacultyId: number; topic: string; question: string; answer?: string }>>([
+    { id: 1, toFacultyId: 1, topic: 'Assignment', question: 'Could you clarify Q3 constraints?', answer: 'Check the updated PDF; input ranges extended.' },
+    { id: 2, toFacultyId: 2, topic: 'Exam', question: 'Syllabus coverage for midterm?', answer: undefined },
+  ]);
+
+  // Teacher Materials (placeholder posts)
+  const [materials, setMaterials] = useState<Array<{ id: number; title: string; course: string; kind: 'Notes' | 'Slides' | 'Assignment'; url: string }>>([
+    { id: 1, title: 'OS Lecture 05 Slides', course: 'Operating Systems', kind: 'Slides', url: '#' },
+    { id: 2, title: 'Linear Algebra Notes Set A', course: 'Linear Algebra', kind: 'Notes', url: '#' },
+  ]);
+
+  // Staff Utilities (placeholder)
+  const [staffTools] = useState<Array<{ name: string; description: string }>>([
+    { name: 'Room Booking Overview', description: 'Quick view of room usage and requests.' },
+    { name: 'Facility Issue Tracker', description: 'Log maintenance requests and updates.' },
+  ]);
+
+  // Clubs & Fests (Gymkhana; Status Code)
+  const [clubs] = useState<Array<{ name: string; desc: string; leads: string[] }>>([
+    { name: 'Coding Club', desc: 'Competitive programming & dev sessions under IIITK Gymkhana.', leads: ['Alice', 'Mohit'] },
+    { name: 'Cultural Club', desc: 'Dance, music, drama events and fests.', leads: ['Priya', 'Rohan'] },
+  ]);
+  const [fests] = useState<Array<{ name: string; when: string; url?: string; flagship?: boolean }>>([
+    { name: 'Advaita (Cultural Fest)', when: 'Every Spring', url: '#advaita' },
+    { name: 'Status Code (Flagship Hackathon)', when: 'Annual', url: '#status-code', flagship: true },
+  ]);
+
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans text-slate-900">
       {/* Navigation */}
@@ -162,7 +199,7 @@ export default function App() {
           </div>
 
           <div className="hidden md:flex md:items-center md:gap-1">
-            {['dashboard','schedule','mess','notices','resources','opportunities','tasks','lostfound','market','directory','tools','chatbot'].map((tab) => (
+            {['dashboard','schedule','mess','notices','resources','opportunities','tasks','lostfound','market','clubs','qa','materials','staff','directory','tools','chatbot'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab as any)}
@@ -370,12 +407,12 @@ export default function App() {
                           className="w-full rounded-xl border border-slate-200 px-4 py-2 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none"
                         >
                           <option value="0">Select Grade</option>
-                          <option value="10">EX (10)</option>
-                          <option value="9">A (9)</option>
-                          <option value="8">B (8)</option>
-                          <option value="7">C (7)</option>
-                          <option value="6">D (6)</option>
-                          <option value="5">P (5)</option>
+                          <option value="10">O (10)</option>
+                          <option value="9">E (9)</option>
+                          <option value="8">A (8)</option>
+                          <option value="7">B (7)</option>
+                          <option value="6">C (6)</option>
+                          <option value="5">D (5)</option>
                         </select>
                       </div>
                       <button 
@@ -741,6 +778,150 @@ export default function App() {
               <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
                 <div className="text-slate-600 text-sm">
                   Chatbot UI placeholder. Hook your provider here (e.g., college-specific knowledge base, auth-gated).
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'qa' && (
+            <motion.div
+              key="qa"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-8"
+            >
+              <SectionHeading subtitle="Students can personally ask doubts to faculty; faculty can reply.">
+                Q&A with Faculty
+              </SectionHeading>
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                <div className="md:col-span-1 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                  <div className="text-sm font-bold text-slate-500 uppercase mb-3">Faculty</div>
+                  <ul className="space-y-2">
+                    {faculty.map(f => (
+                      <li key={f.id} className="rounded-lg border border-slate-100 p-3">
+                        <div className="font-semibold text-slate-800">{f.name}</div>
+                        <div className="text-xs text-slate-500">{f.dept}</div>
+                        <a className="text-xs text-blue-600" href={`mailto:${f.email}`}>{f.email}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="md:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                  <div className="text-sm font-bold text-slate-500 uppercase mb-3">Recent Questions</div>
+                  <div className="space-y-3">
+                    {questions.map(q => {
+                      const to = faculty.find(f => f.id === q.toFacultyId);
+                      return (
+                        <div key={q.id} className="rounded-xl border border-slate-100 p-4">
+                          <div className="text-xs text-slate-500">To: {to?.name} ({to?.dept})</div>
+                          <div className="mt-1 font-semibold text-slate-900">{q.topic}</div>
+                          <div className="mt-1 text-sm text-slate-700">{q.question}</div>
+                          {q.answer ? (
+                            <div className="mt-2 rounded-lg bg-slate-50 p-3 text-sm">
+                              <span className="font-semibold">Answer: </span>{q.answer}
+                            </div>
+                          ) : (
+                            <div className="mt-2 text-xs font-semibold text-amber-600 uppercase">Pending faculty response</div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'materials' && (
+            <motion.div
+              key="materials"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-8"
+            >
+              <SectionHeading subtitle="Teachers can post important notes and materials here.">
+                Teacher Materials
+              </SectionHeading>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {materials.map(m => (
+                  <a key={m.id} href={m.url} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition">
+                    <div className="text-xs font-bold uppercase text-slate-500">{m.kind}</div>
+                    <div className="mt-1 font-semibold text-slate-900">{m.title}</div>
+                    <div className="text-sm text-slate-600">{m.course}</div>
+                    <div className="mt-2 inline-flex items-center gap-1 text-sm text-blue-600">
+                      Open <ChevronRight size={16} />
+                    </div>
+                  </a>
+                ))}
+              </div>
+              <div className="rounded-2xl border border-dashed border-slate-300 p-6 text-center text-sm text-slate-600">
+                Posting UI placeholder for authenticated teachers (uploads/links, titles, course tags).
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'staff' && (
+            <motion.div
+              key="staff"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-8"
+            >
+              <SectionHeading subtitle="Utilities for campus staff.">
+                Staff Utilities
+              </SectionHeading>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {staffTools.map((t, i) => (
+                  <div key={i} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <div className="font-semibold text-slate-900">{t.name}</div>
+                    <div className="text-sm text-slate-600 mt-1">{t.description}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="rounded-2xl border border-dashed border-slate-300 p-6 text-center text-sm text-slate-600">
+                Placeholder for role-based dashboards (e.g., maintenance, room allocations, transport, mess ops).
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'clubs' && (
+            <motion.div
+              key="clubs"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-8"
+            >
+              <SectionHeading subtitle="All clubs and campus fests under IIITK Gymkhana.">
+                Clubs & Fests
+              </SectionHeading>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {clubs.map((c, i) => (
+                  <div key={i} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                    <div className="font-semibold text-slate-900">{c.name}</div>
+                    <div className="text-sm text-slate-600 mt-1">{c.desc}</div>
+                    <div className="mt-2 text-xs text-slate-500">Leads: {c.leads.join(', ')}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="text-sm font-bold text-slate-500 uppercase mb-2">Fests</div>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  {fests.map((f, i) => (
+                    <a key={i} href={f.url || '#'} className="rounded-xl border border-slate-100 p-4 hover:shadow-sm transition">
+                      <div className="flex items-center justify-between">
+                        <div className="font-semibold text-slate-900">{f.name}</div>
+                        {f.flagship && <span className="text-[10px] font-bold uppercase text-indigo-600">Flagship</span>}
+                      </div>
+                      <div className="text-sm text-slate-600 mt-1">When: {f.when}</div>
+                      <div className="mt-2 inline-flex items-center gap-1 text-sm text-blue-600">
+                        Details <ChevronRight size={16} />
+                      </div>
+                    </a>
+                  ))}
                 </div>
               </div>
             </motion.div>
