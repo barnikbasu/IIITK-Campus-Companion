@@ -45,7 +45,7 @@ interface Contact {
 // --- Mock Data ---
 const NOTICES: Notice[] = [
   { id: 1, title: "End Semester Examination Schedule Released", date: "2026-04-10", category: "Academic", important: true },
-  { id: 2, title: "Annual Cultural Fest 'Advaita' Registrations Open", date: "2026-04-15", category: "Event", important: false },
+  { id: 2, title: "Annual Techno-Cultural Fest 'Renesa' Registrations Open", date: "2026-04-15", category: "Event", important: false },
   { id: 3, title: "New Library Timings: 8 AM to 10 PM", date: "2026-04-05", category: "Admin", important: false },
   { id: 4, title: "Scholarship Application Deadline Extended", date: "2026-04-20", category: "Admin", important: true },
 ];
@@ -174,13 +174,21 @@ export default function App() {
     { name: 'Facility Issue Tracker', description: 'Log maintenance requests and updates.' },
   ]);
 
-  // Clubs & Fests (Gymkhana; Status Code)
+  // Clubs (Gymkhana)
   const [clubs] = useState<Array<{ name: string; desc: string; leads: string[] }>>([
-    { name: 'Coding Club', desc: 'Competitive programming & dev sessions under IIITK Gymkhana.', leads: ['Alice', 'Mohit'] },
-    { name: 'Cultural Club', desc: 'Dance, music, drama events and fests.', leads: ['Priya', 'Rohan'] },
+    { name: 'CodeCubes', desc: 'Competitive programming.', leads: ['Sourav Kar'] },
+    { name: 'Symphony Music Club', desc: 'music.', leads: ['Ajay U', 'Arnav Amrit'] },
+    { name: 'Sports Club', desc: 'sports.', leads: ['Anand Kumar', 'Abhishek Kumar', 'Bhukya Akhil'] },
+    { name: 'Udaan', desc: 'creativity.', leads: ['Nilesh Sahay'] },
+    { name: 'Pixel', desc: 'ui/ui, creativity, arts, maths.', leads: ['Kapil Pareek'] },
+    { name: 'Freescape', desc: 'opensource.', leads: ['Alok Ranjan'] },
+    { name: 'Spotlight', desc: 'media, drama, photography, editing, videography', leads: ['Harsh DevJha'] },
+    { name: 'SEAL', desc: 'robotics.', leads: ['Devansh Shukla'] },
+    { name: 'Groovz', desc: 'dance.', leads: ['Subham Koley'] },
   ]);
   const [fests] = useState<Array<{ name: string; when: string; url?: string; flagship?: boolean }>>([
-    { name: 'Advaita (Cultural Fest)', when: 'Every Spring', url: '#advaita' },
+    { name: 'Renesa (Techno-Cultural Fest)', when: 'Every Spring', url: '#renesa' },
+    { name: 'Anukriti (Freshers)', when: 'Winter', url: '#anukriti' },
     { name: 'Status Code (Flagship Hackathon)', when: 'Annual', url: '#status-code', flagship: true },
   ]);
 
